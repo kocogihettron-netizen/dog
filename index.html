@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hoàng cu to</title>
+    <style>
+        :root { --primary-pink: #ff4d6d; --soft-pink: #ffb3c1; }
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center;
+            align-items: center; min-height: 100vh;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
+        }
+        .heart-bg {
+            position: absolute; color: var(--primary-pink);
+            font-size: 20px; opacity: 0.8;
+            animation: float 4s linear forwards; top: 100vh;
+            pointer-events: none; z-index: 1;
+        }
+        @keyframes float {
+            to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); padding: 2.5rem;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center; max-width: 400px; z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        h1 { color: var(--primary-pink); }
+        p { color: #555; font-weight: 500; }
+        .btn {
+            margin-top: 20px; padding: 12px 30px;
+            background: var(--primary-pink); color: white;
+            border: none; border-radius: 25px;
+            cursor: pointer; transition: 0.3s; font-weight: bold;
+        }
+        .btn:hover { transform: scale(1.1); background: #ff758f; }
+        #counter { color: var(--primary-pink); font-size: 0.9rem; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Happy Valentine! ❤️</h1>
+        <p>ở đây không có gì.<br>chỉ có sự chân thành dành cho cậu.</p>
+        <button class="btn" onclick="addMassiveHearts()">Nhấn để thêm yêu thương</button>
+        <div id="counter">Số tim hiện tại: 0</div>
+    </div>
+
+    <script>
+        let heartCount = 0;
+        let isOverloaded = false;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+            document.body.appendChild(heart);
+            
+            heartCount++;
+            document.getElementById('counter').innerText = "Số tim hiện tại: " + heartCount;
+
+            if (heartCount >= 1000 && !isOverloaded) {
+                isOverloaded = true;
+                handleOverload();
+            }
+
+            setTimeout(() => { heart.remove(); }, 4000);
+        }
+
+        function addMassiveHearts() {
+            for(let i=0; i < 50; i++) {
+                setTimeout(createHeart, i * 10);
+            }
+        }
+
+        function handleOverload() {
+            const card = document.querySelector('.card');
+            card.innerHTML = "<h1 style='color:red;'>⚠️ HỆ THỐNG QUÁ TẢI!</h1><p>Phát hiện hơn 1000 đơn vị tình cảm.<br>Server không thể chứa thêm yêu thương này nữa!</p>";
+            card.style.border = "2px solid red";
+            card.style.boxShadow = "0 0 50px red";
+            
+            setInterval(() => {
+                createHeart();
+            }, 50);
+        }
+
+        setInterval(createHeart, 500);
+    </script>
+</body>
+</html>
